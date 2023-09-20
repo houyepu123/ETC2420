@@ -1,0 +1,60 @@
+---
+title: "Yepu_Hou_31460259"
+output: pdf_document
+date: "2023-08-08"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("tidyverse")
+```
+
+```{r load_data_sets}
+arbuthnot <- read.csv("data/arbuthnot.csv")
+present <- read.csv("data/present.csv")
+```
+
+## Question 1
+In terms of boys and girls, comparing Arbuthnot's data to the present, Arbuthnot has a greater number of data sets related to either boys or girls. However, present has a higher magnitude of the data compared to arbuthnot.
+
+```{r, echo=FALSE}
+arbuthnot
+present
+```
+
+## Question 2
+The similarities between arbuthnot and present interms of girls is that the general trend is going up through out the years. Present plot of girls reaches it's peak at 1960 and starting to decline by 1975 and then it slowly builds up until 1990. The general trend of present seems to flactuate through out the years but overall the birth rate of girls is going up. 
+```{r, echo=FALSE}
+ggplot(data = arbuthnot, aes(x = year, y = boys)) +
+    geom_point(shape = 17, color = "red")
+```
+
+```{r}
+
+mutate(present, prop_boys = boys/(boys + girls))  
+glimpse(present)
+```
+## Question 3 
+```{r, echo=FALSE}
+present_mutate <- present %>%
+  mutate(boys = present$boys) %>%
+  mutate(girls = present$girls) %>%
+  mutate(total = boys + girls) %>%
+  mutate(ratio = girls/boys) %>%
+  mutate(prop_girls = girls/total) %>%
+  mutate(prop_boys = boys/total) 
+
+present_mutate
+```
+```{r}
+x <- c(1:9)
+```
+## Question 4
+By looking at the graph we can conclude that arbuthnot's predication is correct as we can see that the graph of boys' propotion is well above 0.5 which is the half point between girls and boys.
+```{r, echo=FALSE}
+ggplot(data = present_mutate, aes(x = year, y = prop_boys)) +
+    geom_line() + 
+    geom_hline(yintercept = 0.5, color = "blue")
+
+```
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
