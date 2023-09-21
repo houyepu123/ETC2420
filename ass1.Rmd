@@ -1,0 +1,56 @@
+---
+title: "Untitled"
+output: html_document
+date: "2023-09-20"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+"library"
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+"read the data"
+```{r}
+df <- read.csv('data/GradesData.csv')
+df$Total
+```
+"remove zeros" 
+```{r}
+df <- df %>%
+  filter(Total != 0)
+```
+"Plot the normal graph with an overlay of normal graph"
+```{r}
+mean_grade <- mean(df$Total, na.rm = TRUE)
+sd_grade <- sd(df$Total, na.rm = TRUE)
+
+ggplot(data = df, aes(x = Total)) + 
+  geom_histogram(aes(y = ..density..), binwidth = 0.01, fill = "blue", alpha = 0.7) +
+  stat_function(
+    fun = dnorm, 
+    args = list(mean = mean_grade, sd = sd_grade), 
+    color = "red"
+  ) +
+  ggtitle("Grade Distribution with Normal Overlay") + 
+  xlab("Grade") + 
+  ylab("Density")
+```
+Explaination: By using an overlay of normal distribution we can see that the distribution of the graph is approxmately normally distributed. This might be due to the central limit theorem which states that given a sufficiently large sample size, the sampling distribution of the mean will be approximately normally distributed, regardless of the distribution of the population from which the samples are drawn. In education settings, if individual assessment items are relatively independent and numerous, the overall grade distribution may approximate to a normal distribution due to this theorem. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
